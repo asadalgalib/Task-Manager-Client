@@ -30,9 +30,20 @@ import {
     DropdownMenuTrigger,
     DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { useContext } from "react";
+import { AuthContext } from "@/Context/AuthContext/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 
 const Navbar = () => {
+    const { user,logOutUser } = useContext(AuthContext);
+    const navigate = useNavigate()
+
+    const handleLogout = () =>{
+        navigate('/');
+        logOutUser();
+    }
+
     return (
         <div className="px-4 lg:px-8 bg-primary flex items-center justify-between h-16 sticky top-0">
             <div className="flex items-center justify-center gap-3">
@@ -101,16 +112,22 @@ const Navbar = () => {
                     <DropdownMenu>
                         <DropdownMenuTrigger>
                             <Avatar>
-                                <AvatarImage src="https://i.ibb.co.com/cJwkmTW/asad.jpg" className="rounded-full" />
-                                <AvatarFallback>AG</AvatarFallback>
+                                {
+                                    user == null? 
+                                    <AvatarFallback>AG</AvatarFallback> :  <AvatarImage src={user?.photoURL} className="rounded-full" />
+                                }
                             </Avatar>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className='mr-10 mt-2'>
-                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                            <DropdownMenuLabel>
+                               {
+                                user && <p>{user?.displayName}</p>
+                               }
+                            </DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>
                                 <div>
-                                    <Button variant="secondary" className='hover:bg-primary hover:text-white'>
+                                    <Button onClick={handleLogout} variant="secondary" className='hover:bg-primary hover:text-white'>
                                         <LogOut className="text-red-500"></LogOut>
                                         <span className="font-medium">Logout</span>
                                     </Button>
