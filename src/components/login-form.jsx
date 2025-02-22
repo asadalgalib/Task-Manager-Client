@@ -7,18 +7,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+
 import { useNavigate } from 'react-router-dom';
 import { signInWithPopup } from 'firebase/auth';
 import { useContext } from "react"
 import { AuthContext } from "@/Context/AuthContext/AuthProvider"
 import Swal from "sweetalert2"
+import useAxiosSecure from "@/hooks/useAxiosSecure"
 
 export function LoginForm({ className, ...props }) {
   const navigate = useNavigate();
-  const { user, auth, provider } = useContext(AuthContext);
+  const { user, setUser, auth, provider } = useContext(AuthContext);
+  const axioSecure = useAxiosSecure();
 
+  // log in and save user in database
   const handleLogin = () => {
     // if (user) {
     //   return Swal.fire({
@@ -27,12 +29,29 @@ export function LoginForm({ className, ...props }) {
     //     text: "You are already loged in!",
     //   });
     // }
+
     signInWithPopup(auth, provider)
       .then(result => {
-        if (result.user) {
-          console.log(result.user);
-          navigate('/user/tasks');
-        }
+
+        setUser(result.user);
+        const name = result.user.displayName;
+        const email = result.user.email;
+        const photo = result.user.photoURL;
+
+        axioSecure.post('/user', { name, email, photo })
+          .then(res => {
+            if (res.data.status === 200 || res.data.insertedId) {
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Login Successfully",
+                showConfirmButton: false,
+                timer: 1500
+              });
+              navigate('/user/tasks');
+            }
+
+          })
       }).catch(err => {
         console.log(err.code);
       })
