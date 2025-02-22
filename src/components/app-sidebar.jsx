@@ -1,4 +1,4 @@
-import { LayoutDashboardIcon, List  } from "lucide-react"
+import { LayoutDashboardIcon, List, LogIn  } from "lucide-react"
 import taskIcon from '../assets/icons8-shein-50.png'
 import {
     Sidebar,
@@ -26,6 +26,11 @@ const items = [
         url: "/tasks",
         icon: List,
     },
+    {
+        title: "Signup",
+        url: "/signup",
+        icon: LogIn,
+    },
 ]
 
 export function AppSidebar() {
@@ -37,11 +42,11 @@ export function AppSidebar() {
                         <div>
                             <img
                                 src={taskIcon}
-                                className="w-12 h-12"
+                                className="lg:w-12 lg:h-12 w-10 h-10"
                                 alt="logo" />
                         </div>
                         <div>
-                            <h1 className="text-xl text-white">Task Manager</h1>
+                            <h1 className="lg:text-xl text-lg text-white">Task Manager</h1>
                         </div>
                     </div>
                 </SidebarHeader>
