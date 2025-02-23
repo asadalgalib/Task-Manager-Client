@@ -7,7 +7,16 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import ReactReadMoreReadLess from "react-read-more-read-less";
+import { ChevronDown, Delete, DeleteIcon, Edit, Ellipsis, Trash } from 'lucide-react';
 
 const Task = () => {
     const data = [
@@ -72,7 +81,32 @@ const Task = () => {
                     {
                         data?.map(task => <Card className='rounded' key={task.id}>
                             <CardHeader>
-                                <CardTitle>{task.title}</CardTitle>
+                                <CardTitle>
+                                    <div className='flex items-center justify-between'>
+                                        <span>{task.title}</span>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger>
+                                                <Ellipsis></Ellipsis>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent className='mr-14 mt-2'>
+                                                <DropdownMenuLabel><span className='text-center'>Actions</span></DropdownMenuLabel>
+                                                <DropdownMenuSeparator />
+                                                <DropdownMenuItem>
+                                                    <div className='flex items-start justify-start gap-2'>
+                                                        <Edit className='w-4 h-4'></Edit>
+                                                        <span>Edit</span>
+                                                    </div>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem>
+                                                    <div className='flex items-start justify-start gap-2'>
+                                                        <Trash className='w-4 h-4'></Trash>
+                                                        <span>Delete</span>
+                                                    </div>
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </div>
+                                </CardTitle>
                                 <CardDescription>{task.time}</CardDescription>
                             </CardHeader>
                             {
@@ -100,7 +134,32 @@ const Task = () => {
                     {
                         data?.map(task => <Card className='rounded' key={task.id}>
                             <CardHeader>
-                                <CardTitle>{task.title}</CardTitle>
+                            <CardTitle>
+                                    <div className='flex items-center justify-between'>
+                                        <span>{task.title}</span>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger>
+                                                <Ellipsis></Ellipsis>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent className='mr-14 mt-2'>
+                                                <DropdownMenuLabel><span className='text-center'>Actions</span></DropdownMenuLabel>
+                                                <DropdownMenuSeparator />
+                                                <DropdownMenuItem>
+                                                    <div className='flex items-start justify-start gap-2'>
+                                                        <Edit className='w-4 h-4'></Edit>
+                                                        <span>Edit</span>
+                                                    </div>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem>
+                                                    <div className='flex items-start justify-start gap-2'>
+                                                        <Trash className='w-4 h-4'></Trash>
+                                                        <span>Delete</span>
+                                                    </div>
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </div>
+                                </CardTitle>
                                 <CardDescription>{task.time}</CardDescription>
                             </CardHeader>
                             {
@@ -128,7 +187,32 @@ const Task = () => {
                     {
                         data?.map(task => <Card className='rounded' key={task.id}>
                             <CardHeader>
-                                <CardTitle>{task.title}</CardTitle>
+                            <CardTitle>
+                                    <div className='flex items-center justify-between'>
+                                        <span>{task.title}</span>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger>
+                                                <Ellipsis></Ellipsis>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent className='mr-14 mt-2'>
+                                                <DropdownMenuLabel><span className='text-center'>Actions</span></DropdownMenuLabel>
+                                                <DropdownMenuSeparator />
+                                                <DropdownMenuItem>
+                                                    <div className='flex items-start justify-start gap-2'>
+                                                        <Edit className='w-4 h-4'></Edit>
+                                                        <span>Edit</span>
+                                                    </div>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem>
+                                                    <div className='flex items-start justify-start gap-2'>
+                                                        <Trash className='w-4 h-4'></Trash>
+                                                        <span>Delete</span>
+                                                    </div>
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </div>
+                                </CardTitle>
                                 <CardDescription>{task.time}</CardDescription>
                             </CardHeader>
                             {

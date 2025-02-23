@@ -18,13 +18,18 @@ import { NavLink } from "react-router-dom";
 const items = [
     {
         title: "Dashboard",
-        url: "/user/dashboard",
+        url: "/dashboard",
         icon: LayoutDashboardIcon,
     },
     {
         title: "Task",
-        url: "/user/tasks",
+        url: "/tasks",
         icon: List,
+    },
+    {
+        title: "Login",
+        url: "/signup",
+        icon: LogIn,
     },
 ]
 

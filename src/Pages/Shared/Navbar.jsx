@@ -56,22 +56,23 @@ const Navbar = () => {
         const description = userData.description;
         const status = userData.status;
         const time = new Date();
-        console.log({ title, description, status, time });
+        const email = user.email;
+        console.log({ title, description, status, time,email });
 
-        axioSecure.post('/task', { title, description, status, time })
+        axioSecure.post('/task', { title, description, status, time,email })
             .then(res => {
                 if (res.data.insertedId) {
                     setOpen(false)
                     Swal.fire({
                         position: "center",
                         icon: "success",
-                        title: "Login Successfully",
+                        title: "Task Added",
                         showConfirmButton: false,
                         timer: 1500
                     });
                     reset();
                     setTimeout(() => {
-                        navigate('/user/tasks');
+                        navigate('/tasks');
                     }, 1500);
                 }
             })

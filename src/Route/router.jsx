@@ -7,20 +7,20 @@ import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <Signup></Signup>
-  },
-  {
-    path: "/user",
+    path: "/",
     element: <MainLayout></MainLayout>,
     children: [
       {
-        path: '/user/tasks',
-        element: <PrivateRoute><Task></Task></PrivateRoute>
+        path: '/tasks',
+        element: <Task></Task>
       },
       {
-        path: '/user/dashboard',
-        element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>
+        path: '/dashboard',
+        element: <Dashboard></Dashboard>
+      },
+      {
+        path : "/signup",
+        element: <Signup></Signup>
       }
     ]
   }
