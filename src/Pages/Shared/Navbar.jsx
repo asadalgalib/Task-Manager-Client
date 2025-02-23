@@ -36,6 +36,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import useTask from "@/hooks/useTask";
 
 const Navbar = () => {
     const { user, logOutUser } = useContext(AuthContext);
@@ -43,6 +44,7 @@ const Navbar = () => {
     const { register, handleSubmit, setValue, control,reset, formState: { errors } } = useForm();
     const axioSecure = useAxiosSecure();
     const [open, setOpen] = useState(false);
+    const [allTask,isLoading,error,refetch] = useTask();
 
     // logout user
     const handleLogout = () => {
@@ -71,6 +73,7 @@ const Navbar = () => {
                         timer: 1500
                     });
                     reset();
+                    refetch();
                     setTimeout(() => {
                         navigate('/tasks');
                     }, 1500);
@@ -83,7 +86,7 @@ const Navbar = () => {
 
 
     return (
-        <div className="px-4 lg:px-8 bg-primary flex items-center justify-between h-16 sticky top-0">
+        <div className="px-4 lg:px-8 bg-primary flex items-center justify-between h-16 sticky top-0 z-50">
             <div className="flex items-center justify-center gap-3">
                 <div>
                     <SidebarTrigger />
