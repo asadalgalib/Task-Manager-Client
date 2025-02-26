@@ -38,11 +38,14 @@ import {
     verticalListSortingStrategy
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import useAxiosSecure from '@/hooks/useAxiosSecure';
+import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
 
 const Task = () => {
-    const [allTask, isLoading] = useTask();
+    const [allTask, isLoading, error, refetch] = useTask();
     const [data, setData] = useState([]);
-    console.log(data);
+    const axiosSecure = useAxiosSecure()
 
     useEffect(() => {
         setData(allTask);
@@ -53,10 +56,7 @@ const Task = () => {
         "In Progress": data?.filter(task => task.status === "In Progress"),
         "Done": data?.filter(task => task.status === "Done")
     }
-    const toDo = data?.filter(task => task.status === "To Do");
-    const inProgress = data?.filter(task => task.status === "In Progress");
-    const done = data?.filter(task => task.status === "Done");
-    console.log(toDo,inProgress,done);
+
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {
@@ -123,7 +123,38 @@ const Task = () => {
         }
     }
 
-    if (isLoading || !data) {
+    const handleDelete = id => {
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosSecure.delete(`/task?id=${id}`)
+                    .then(res => {
+                        if (res.data.deletedCount > 0) {
+                            refetch();
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your Task has been deleted.",
+                                icon: "success"
+                            });
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err.code);
+                    })
+            }
+        })
+    }
+
+
+    if (isLoading) {
         return <div className='min-h-screen flex justify-center items-center'><span className="loading loading-spinner text-primary"></span></div>
     }
 
@@ -153,19 +184,19 @@ const Task = () => {
                                                             <div className='flex items-center justify-between'>
                                                                 <span>{task.title}</span>
                                                                 <DropdownMenu>
-                                                                    <DropdownMenuTrigger>
+                                                                    <DropdownMenuTrigger >
                                                                         <Ellipsis />
                                                                     </DropdownMenuTrigger>
                                                                     <DropdownMenuContent className='mr-14 mt-2'>
                                                                         <DropdownMenuLabel><span className='text-center'>Actions</span></DropdownMenuLabel>
                                                                         <DropdownMenuSeparator />
-                                                                        <DropdownMenuItem>
-                                                                            <div className='flex items-start justify-start gap-2'>
+                                                                        <DropdownMenuItem className='cursor-pointer'>
+                                                                            <Link to={`/update/${task._id}`} className='flex items-start justify-start gap-2'>
                                                                                 <Edit className='w-4 h-4' />
                                                                                 <span>Edit</span>
-                                                                            </div>
+                                                                            </Link>
                                                                         </DropdownMenuItem>
-                                                                        <DropdownMenuItem>
+                                                                        <DropdownMenuItem className='cursor-pointer' onClick={() => handleDelete(`${task._id}`)}>
                                                                             <div className='flex items-start justify-start gap-2'>
                                                                                 <Trash className='w-4 h-4' />
                                                                                 <span>Delete</span>
@@ -175,10 +206,13 @@ const Task = () => {
                                                                 </DropdownMenu>
                                                             </div>
                                                         </CardTitle>
-                                                        <CardDescription>{task.time}</CardDescription>
+                                                        <CardDescription>
+                                                            <h1>Deadline : <span>{task.time}</span></h1>
+                                                        </CardDescription>
                                                     </CardHeader>
-                                                    {
-                                                        task.description && <CardContent>
+                                                    <CardContent>
+                                                        {
+                                                            task.description &&
                                                             <ReactReadMoreReadLess
                                                                 readMoreStyle={{ color: '#94a3b8' }}
                                                                 readLessStyle={{ color: '#94a3b8' }}
@@ -188,18 +222,19 @@ const Task = () => {
                                                             >
                                                                 {task.description}
                                                             </ReactReadMoreReadLess>
-                                                        </CardContent>
-                                                    }
+                                                        }
+                                                    </CardContent>
                                                 </Card>
                                             </SortableItem>)
                                     }
                                 </div>
                             </div>
+
                         </SortableContext>
                     )
                 }
             </div>
-        </DndContext>
+        </DndContext >
     );
 };
 

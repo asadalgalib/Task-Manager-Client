@@ -1,7 +1,7 @@
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import { LogOut, Plus } from "lucide-react";
+import { CalendarIcon, LogOut, Plus } from "lucide-react";
 import { Label } from '@radix-ui/react-label';
 import {
     Select,
@@ -30,6 +30,14 @@ import {
     DropdownMenuTrigger,
     DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { Calendar } from "@/components/ui/calendar"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns"
 import { useContext, useState } from "react";
 import { AuthContext } from "@/Context/AuthContext/AuthProvider";
 import { useNavigate } from "react-router-dom";
@@ -41,10 +49,11 @@ import useTask from "@/hooks/useTask";
 const Navbar = () => {
     const { user, logOutUser } = useContext(AuthContext);
     const navigate = useNavigate()
-    const { register, handleSubmit, setValue, control,reset, formState: { errors } } = useForm();
+    const { register, handleSubmit, setValue, control, reset, formState: { errors } } = useForm();
     const axioSecure = useAxiosSecure();
     const [open, setOpen] = useState(false);
-    const [allTask,isLoading,error,refetch] = useTask();
+    const [date, setDate] = useState(null);
+    const [allTask, isLoading, error, refetch] = useTask();
 
     // logout user
     const handleLogout = () => {
@@ -57,11 +66,11 @@ const Navbar = () => {
         const title = userData.title;
         const description = userData.description;
         const status = userData.status;
-        const time = new Date();
+        const time = new Date(date).toLocaleDateString("en-GB");
         const email = user.email;
-        console.log({ title, description, status, time,email });
+        console.log({ title, description, status, time, email });
 
-        axioSecure.post('/task', { title, description, status, time,email })
+        axioSecure.post('/task', { title, description, status, time, email })
             .then(res => {
                 if (res.data.insertedId) {
                     setOpen(false)
@@ -110,6 +119,33 @@ const Navbar = () => {
                                 <DialogTitle className="text-center text-xl font-semibold text-white">Add Your Task</DialogTitle>
                                 <DialogDescription className="text-center mb-2">Create your plan and make it happen.</DialogDescription>
                             </DialogHeader>
+                            <div>
+                                <Label htmlFor="name" className='text-white'>Deadline</Label>
+                                <div className="mt-1">
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                variant={"outline"}
+                                                className={cn(
+                                                    "w-[240px] justify-start text-left font-normal",
+                                                    !date && "text-muted-foreground"
+                                                )}
+                                            >
+                                                <CalendarIcon />
+                                                {date ? format(date, "PPP") : <span>Pick a date</span>}
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-auto p-0" align="start">
+                                            <Calendar
+                                                mode="single"
+                                                selected={date}
+                                                onSelect={setDate}
+                                                initialFocus
+                                            />
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
+                            </div>
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <div className="grid w-full items-center gap-4">
                                     <div className="flex flex-col space-y-1.5">
