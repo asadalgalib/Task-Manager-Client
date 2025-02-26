@@ -12,23 +12,23 @@ const router = createBrowserRouter([
     element: <MainLayout></MainLayout>,
     children: [
       {
-        path: '/tasks',
-        element: <Task></Task>
+        path: '/',
+        element: <PrivateRoute><Task></Task></PrivateRoute>
       },
       {
         path: '/dashboard',
         element: <Dashboard></Dashboard>
       },
       {
-        path : "/signup",
-        element: <Signup></Signup>
-      },
-      {
-        path : "/update/:id",
-        element : <Update></Update>
+        path: "/update/:id",
+        element: <PrivateRoute><Update></Update></PrivateRoute>
       }
     ]
-  }
+  },
+  {
+    path: "/signup",
+    element: <Signup></Signup>
+  },
 ]);
 
 export default router;

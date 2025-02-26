@@ -29,7 +29,6 @@ export function LoginForm({ className, ...props }) {
         text: "You are already loged in!",
       });
     }
-
     signInWithPopup(auth, provider)
       .then(result => {
 
@@ -37,7 +36,7 @@ export function LoginForm({ className, ...props }) {
         const name = result.user.displayName;
         const email = result.user.email;
         const photo = result.user.photoURL;
-
+        navigate('/');
         axioSecure.post('/user', { name, email, photo })
           .then(res => {
             if (res.data.status === 200 || res.data.insertedId) {
@@ -48,7 +47,6 @@ export function LoginForm({ className, ...props }) {
                 showConfirmButton: false,
                 timer: 1500
               });
-              navigate('/user/tasks');
             }
 
           })

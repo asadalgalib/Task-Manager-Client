@@ -16,21 +16,21 @@ import { NavLink } from "react-router-dom";
 
 // Menu items.
 const items = [
-    {
-        title: "Dashboard",
-        url: "/dashboard",
-        icon: LayoutDashboardIcon,
-    },
+    // {
+    //     title: "Dashboard",
+    //     url: "/dashboard",
+    //     icon: LayoutDashboardIcon,
+    // },
     {
         title: "Task",
-        url: "/tasks",
+        url: "/",
         icon: List,
     },
-    {
-        title: "Login",
-        url: "/signup",
-        icon: LogIn,
-    },
+    // {
+    //     title: "Login",
+    //     url: "/signup",
+    //     icon: LogIn,
+    // },
 ]
 
 export function AppSidebar() {

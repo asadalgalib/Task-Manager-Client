@@ -83,7 +83,7 @@ const Update = () => {
                                 showConfirmButton: false,
                                 timer: 1500
                             });
-                            navigate('/tasks');
+                            navigate('/');
                         }
                     })
             }

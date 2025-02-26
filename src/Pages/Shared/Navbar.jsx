@@ -84,7 +84,7 @@ const Navbar = () => {
                     reset();
                     refetch();
                     setTimeout(() => {
-                        navigate('/tasks');
+                        navigate('/');
                     }, 1500);
                 }
             })
